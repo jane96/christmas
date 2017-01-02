@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/iziModal.min.css">
+    <title>嘿！你的圣诞礼物等着你来领取！</title>
+    <style>
+        .keBody{
+            width:100%;
+            height:100%;
+            background-size: 100%;
+            background-image: url(images/b1.jpg);
+            display:block;
+        }
+        #lottery{
+            /*display:none;*/
+        }
+        .lottery1,.lottery2{
+            width: 760px;
+            height: 680px;
+            background-size: 100%;
+            background-repeat: no-repeat;
+            margin-left:160px;
+            border:1px solid ;
+            border-right: transparent;
+            border-left: transparent;
+            border-bottom: transparent;
+
+        }
+        .lottery1{
+
+            background-image: url(images/back1.png);
+
+        }
+        .lottery2{
+            background-image: url(images/back2.png);
+
+        }
+        #mainTable{  background:#F5F7F6;border-color:#ba1809;margin:auto;margin-top:100px;opacity: 0.85;border:1px solid red;}
+        #mainTable td{position:relative;width:190px;height:170px;text-align:center;font-index:-999}
+        #mainTable td img{display:block;width:190px;height:170px;opacity:1;}
+        #mainTable td span a{width:190px;height:170px;display:block;text-decoration:none;background:url(images/start.jpg) no-repeat top center;}
+        #mainTable td a:hover{background:rgba(252,211,4,0.5) no-repeat;}
+        #mainTable td.active .mask{display:block;}
+        .mask{
+            width:100%;
+            height:100%;
+            position:absolute;
+            left:0;
+            top:0;
+            background:orangered;
+            opacity: 0.5;
+            display:none;
+        }
+        .panel{
+            margin-top:10px;
+            margin-left:10px;
+            height:200px;
+            background:palevioletred;
+            opacity: 0.9;
+        }
+        .badge{
+            background-color:#57b5e3;
+        }
+        .prize{
+            margin-top:200px;
+
+        }
+        #clickTable{
+            border-color:orangered;
+            border:1px solid;
+            background-color:palevioletred;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body class="keBody col-md-12">
+<!--面板-->
+<div class="col-md-3">
+<div class="panel panel-danger ">
+    <div class="panel-heading">
+        <h3 class="panel-title" align="center"> 温馨提示哦</h3>
+    </div>
+    <div class="panel-body">
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-warning"><span class="badge pull-left">1</span>&nbsp;你只可以点击三件奖品的图片查看详情!</li>
+            <li class="list-group-item list-group-item-danger"><span class="badge pull-left">2</span>&nbsp;你只有一次抽奖机会哦！</li>
+            <li class="list-group-item list-group-item-primary"><span class="badge pull-left">3</span>&nbsp;点击你的头像开始抽奖！</li>
+        </ul>
+    </div>
+</div>
+    <!--抽奖次数-->
+    <div class="clickCounts">
+        <table id="clickTable" class="table table-responsive text-center">
+            <thead >
+                <tr class="bg-primary text-center">
+                    <th  >抽奖次数</th>
+                    <th  >查看奖品次数</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="bg-success">
+                    <td id="clickTime1" >1</td>
+                    <td id="clickTime2" >3</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!--效果html开始-->
+<div class="col-md-5">
+<div id="lottery" class="lottery1">
+    <table id="mainTable" border="1" class="table-responsive">
+        <tr>
+            <td class="lottery-unit lottery-unit-0"><a href="javascript:void(0)" onclick="transfer(0)" ><img src="images/cloth.jpg"></a><div class="mask"></div></td>
+            <td class="lottery-unit lottery-unit-1"><a  href="javascript:void(1)" onclick="transfer(1)"><img src="images/necklace.jpg"></a><div class="mask"></div></td>
+            <td class="lottery-unit lottery-unit-2"><a   href="javascript:void(2)" onclick="transfer(2)"><img src="images/bgn.jpg"></a><div class="mask"></div></td>
+        </tr>
+        <tr>
+            <td class="lottery-unit lottery-unit-7"><a  href="javascript:void(7)" onclick="transfer(7)"><img src="images/red.png."></a><div class="mask"></div></td>
+            <td><span><a href="#"><img src="images/start.jpg."></a></span></td>
+            <td class="lottery-unit lottery-unit-3"><a href="javascript:void(3)" onclick="transfer(3)"><img src="images/kiss.png"></a><div class="mask"></div></td>
+        </tr>
+        <tr>
+            <td class="lottery-unit lottery-unit-6"><a  href="javascript:void(6)" onclick="transfer(6)"><img src="images/package.jpg"></a><div class="mask"></div></td>
+            <td class="lottery-unit lottery-unit-5"><a   href="javascript:void(5)" onclick="transfer(5)"><img src="images/hat.jpg"></a><div class="mask"></div></td>
+            <td class="lottery-unit lottery-unit-4"><a  href="javascript:void(4)" onclick="transfer(4)"> <img src="images/water.jpg"></a><div class="mask"></div></td>
+        </tr>
+    </table>
+</div>
+    <!-- 模态窗口 -->
+    <div id="modal" class="text-center">
+        <!-- 模态窗口的内容 -->
+
+    </div>
+</div>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/iziModal.min.js"></script>
+<script type="text/javascript">
+
+        var num2 = 3;
+        var isEnd = false;
+        var link =[
+            "http://item.yohobuy.com/product/pro_592538_731988/JASONWOODZhenZhiShan362107001PiaoBai.html?from=search-s-JASONWOOD_1_9",
+            "http://item.yohobuy.com/product/pro_487468_610228/SLOWChunYinDuMeiGuiJinMuMaXiangLianSD5012.html?from=search-s-slow%E7%8E%AB%E7%91%B0%E9%87%91_1_2",
+            " http://item.yohobuy.com/product/pro_643900_790130/haoqimisi%20gaibi%20fuguleisikuanbianyouhuotoushigaoyaowenxiongtaozhuang%20%20heise%20MC01TZ69.html?from=list-c-363_1_2",
+            "",
+            "http://item.yohobuy.com/product/pro_556666_689104/EISENBERGYiShiBeiGeWoXingWoSuNvShiXiangShui30ML3259550301076.html?from=search-s-%E9%A6%99%E6%B0%B4_1_14",
+            "http://item.yohobuy.com/product/pro_657830_805212/DIRTY%20VELVET%20PRUfangyangnijueshimao%2010440.html?from=list-c-60_1_18",
+            "http://item.yohobuy.com/product/pro_656260_803528/FIOOjinshusanjiaoshoutidanjianbaoheise%208080256.html?from=list-c-7_1_29",
+            ""
+        ];
+        function transfer(n){
+             if(num2 >0 || isEnd) {
+                if (n != 3 && n != 7 ) {
+                    if(!isEnd)
+                        num2 -= 1;
+                    document.getElementById("clickTime2").innerHTML = num2;
+                   $('#modal').iziModal({//初始化
+                        title: "<h4 align='center'>奖品详情</h4>",
+                        theme: "light",
+                         width: 900,
+                        iframe: true,
+                        iframeHeight: 400,
+                        iframeURL: link[n],
+                        ransitionInModal: 'transitionIn',
+                        transitionOutModal: 'transitionOut',
+                        transitionInOverlay: 'fadeIn',
+                        transitionOutOverlay: 'fadeOut',
+                        overlayClose: true,
+                        onClosed: function() {
+                            $('#modal').iziModal('destroy');//销毁模态窗口。
+                            document.getElementById('modal').innerHTML = "";
+                        }
+
+                    });
+                    $('#modal').iziModal('open');//打开模态窗口。
+                }
+                else {
+                    if(!isEnd)
+                        num2 -= 1;
+                    document.getElementById("clickTime2").innerHTML = num2;
+                    if (n == 3){
+                        //初始化模态窗口
+                        document.getElementById('modal').innerHTML = "<div class='bg-warningtext-primary '><font size='5' color='#c71585'><b>价值9999的男神振振的香吻一枚！</b></font></div>";
+                        $('#modal').iziModal({//初始化
+                            title: "<h4 align='center'>奖品详情</h4>",
+                            theme: "light",
+                            ransitionInModal: 'transitionIn',
+                            transitionOutModal: 'transitionOut',
+                            transitionInOverlay: 'fadeIn',
+                            transitionOutOverlay: 'fadeOut',
+                            overlayClose: true,
+                            onClosed: function() {
+                                $('#modal').iziModal('destroy');//销毁模态窗口。
+                                document.getElementById('modal').innerHTML = "";
+                            }
+
+                        });
+                        $('#modal').iziModal('open');//打开模态窗口。
+
+                     }
+                     else
+                        document.getElementById('modal').innerHTML = "<div class='bg-danger text-primary'><font size='5'  color='#c71585'><b>价值299的红包一个！</b></font></div>";
+                    $('#modal').iziModal({//初始化
+                        title: "<h4 align='center'>奖品详情</h4>",
+                        theme: "light",
+                        ransitionInModal: 'transitionIn',
+                        transitionOutModal: 'transitionOut',
+                        transitionInOverlay: 'fadeIn',
+                        transitionOutOverlay: 'fadeOut',
+                        overlayClose: true,
+                        onClosed: function() {
+                            $('#modal').iziModal('destroy');//销毁模态窗口。
+                            document.getElementById('modal').innerHTML = "";
+                        }
+
+                    });
+                    $('#modal').iziModal('open');//打开模态窗口。
+                }
+            }else{
+                $('#modal').iziModal({//初始化
+                    title: "<font color='white'><b>查看奖品次数已经用完！</b></font>",
+                    headerColor: "#BD5B5B",
+                    theme: "light",
+                    ransitionInModal: 'transitionIn',
+                    transitionOutModal: 'transitionOut',
+                    transitionInOverlay: 'fadeIn',
+                    transitionOutOverlay: 'fadeOut',
+                    overlayClose: true,
+                    onClosed: function() {
+                        $('#modal').iziModal('destroy');//销毁模态窗口。
+                    }
+
+                });
+                $('#modal').iziModal('open');//打开模态窗口。
+            }
+}
+    var lottery={
+        index:-1,    //当前转动到哪个位置，起点位置
+        count:0,    //总共有多少个位置
+        timer:0,    //setTimeout的ID，用clearTimeout清除
+        speed:20,    //初始转动速度
+        times:0,    //转动次数
+        cycle:50,    //转动基本次数：即至少需要转动多少次再进入抽奖环节
+        prize:-1,    //中奖位置
+        init:function(id){
+            if ($("#"+id).find(".lottery-unit").length>0) {
+                $lottery = $("#"+id);
+                $units = $lottery.find(".lottery-unit");
+                this.obj = $lottery;
+                this.count = $units.length;
+                $lottery.find(".lottery-unit-"+this.index).addClass("active");
+
+
+            }
+        },
+        roll:function(){
+            var index = this.index;
+            var count = this.count;
+            var lottery = this.obj;
+            $(lottery).find(".lottery-unit-"+index).removeClass("active");
+            index += 1;
+            if (index>count-1) {
+                index = 0;
+            };
+            $(lottery).find(".lottery-unit-"+index).addClass("active");
+            this.index=index;
+
+            return false;
+        },
+        stop:function(index){
+            this.prize=index;
+            return false;
+        }
+    };
+
+    function roll(){
+        lottery.times += 1;
+        lottery.roll();//转动过程调用的是lottery的roll方法，这里是第一次调用初始化
+        if (lottery.times > lottery.cycle+10 && lottery.prize==lottery.index) {
+            clearTimeout(lottery.timer);
+            lottery.prize=-1;
+            lottery.times=0;
+            click=false;
+        }else{
+            if (lottery.times<lottery.cycle) {
+                lottery.speed -= 10;
+            }else if(lottery.times==lottery.cycle) {
+                var index = Math.random()*(lottery.count)|0;
+                lottery.prize = index;
+            }else{
+                if (lottery.times > lottery.cycle+10 && ((lottery.prize==0 && lottery.index==7) || lottery.prize==lottery.index+1)) {
+                    lottery.speed += 110;
+                }else{
+                    lottery.speed += 20;
+                }
+            }
+            if (lottery.speed<40) {
+                lottery.speed=40;
+            };
+            //console.log(lottery.times+'^^'+lottery.speed+'^^'+lottery.prize);
+            lottery.timer = setTimeout(roll,lottery.speed);//循环调用
+        }
+        //结束
+        if(lottery.prize == -1 &&lottery.times==0&& lottery.index != -1) {
+            isEnd = true;
+            if (lottery.index != 3 && lottery.index != 7) {
+
+                $('#modal').iziModal({//初始化
+                    title: "<h4 align='center'>抽奖结果</h4>",
+                    theme: "light",
+                    width: 900,
+                    iframe: true,
+                    iframeHeight: 400,
+                    iframeURL: link[lottery.index ],
+                    ransitionInModal: 'transitionIn',
+                    transitionOutModal: 'transitionOut',
+                    transitionInOverlay: 'fadeIn',
+                    transitionOutOverlay: 'fadeOut',
+                    overlayClose: true,
+                    onClosed: function() {
+                        $('#modal').iziModal('destroy');//销毁模态窗口。
+                        document.getElementById('modal').innerHTML = "";
+                    }
+
+                });
+                $('#modal').iziModal('open');//打开模态窗口。
+            }else{
+                if (lottery.index == 3){
+                    //初始化模态窗口
+                    document.getElementById('modal').innerHTML = "<div class='bg-warningtext-primary '><font size='5' color='#c71585'><b>价值9999的男神振振的香吻一枚！</b></font></div>";
+                    $('#modal').iziModal({//初始化
+                        title: "<h4 align='center'>抽奖结果</h4>",
+                        theme: "light",
+                        ransitionInModal: 'transitionIn',
+                        transitionOutModal: 'transitionOut',
+                        transitionInOverlay: 'fadeIn',
+                        transitionOutOverlay: 'fadeOut',
+                        overlayClose: true,
+                        onClosed: function() {
+                            $('#modal').iziModal('destroy');//销毁模态窗口。
+                            document.getElementById('modal').innerHTML = "";
+                        }
+
+                    });
+                    $('#modal').iziModal('open');//打开模态窗口。
+
+                }
+                else
+                    document.getElementById('modal').innerHTML = "<div class='bg-danger text-primary'><font size='5'  color='#c71585'><b>价值299的红包一个！</b></font></div>";
+                $('#modal').iziModal({//初始化
+                    title: "<h4 align='center'>抽奖结果</h4>",
+                    theme: "light",
+                    ransitionInModal: 'transitionIn',
+                    transitionOutModal: 'transitionOut',
+                    transitionInOverlay: 'fadeIn',
+                    transitionOutOverlay: 'fadeOut',
+                    overlayClose: true,
+                    onClosed: function() {
+                        $('#modal').iziModal('destroy');//销毁模态窗口。
+                        document.getElementById('modal').innerHTML = "";
+                    }
+
+                });
+                $('#modal').iziModal('open');//打开模态窗口。
+
+            }
+        }
+        return false;
+    }
+
+    var click=false;
+    //闪灯效果
+    var num = 1;
+    $("#lottery").attr("class",function(){
+        setInterval(function(){
+
+            if(num%2==0){
+                $('#lottery').addClass("lottery2");
+                num = 1;
+            }else{
+                $('#lottery').addClass("lottery");
+                $('#lottery').removeClass('lottery2');
+                num = 2;
+            }
+        },500)
+    });
+    var num1 = 1;//抽奖次数
+
+    window.onload=function(){
+        lottery.init('lottery');
+        $("#lottery span a").click(function(){
+           if(num1 > 0){
+                num1 -= 1;
+                document.getElementById("clickTime1").innerHTML = num1;
+            }else{
+               $('#modal').iziModal({//初始化
+                   title: "<font color='white'><b>抽奖次数已经用完！</b></font>",
+                   headerColor: "#BD5B5B",
+                   theme: "light",
+                   ransitionInModal: 'transitionIn',
+                   transitionOutModal: 'transitionOut',
+                   transitionInOverlay: 'fadeIn',
+                   transitionOutOverlay: 'fadeOut',
+                   overlayClose: true,
+                   onClosed: function() {
+                       $('#modal').iziModal('destroy');//销毁模态窗口。
+                   }
+               });
+               $('#modal').iziModal('open');//打开模态窗口。
+                return false;
+            }
+            if (click) {//click控制一次抽奖过程中不能重复点击抽奖按钮，后面的点击不响应
+                return false;
+            }else{
+                lottery.speed=100;
+                roll();    //转圈过程不响应click事件，会将click置为false
+
+                click=true; //一次抽奖完成后，设置click为true，可继续抽奖
+                return false;
+            }
+        });
+    };
+</script>
+<!--效果html结束-->
+
+</body>
+</html>
